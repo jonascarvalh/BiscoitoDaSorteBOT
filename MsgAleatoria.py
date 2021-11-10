@@ -74,11 +74,11 @@ frases = [
     'Nada é por acaso… Acredite em seus sonhos e nos seus potenciais….Na vida tudo se supera..',
     'Acredite em milagres, mas não dependa deles.',
     'Você sempre será a sua melhor companhia!',
-    'Realize o óbvio, pense no improvável e conquiste o impossível Latumia. (W.J.F.)',
+    'Realize o óbvio, pense no improvável e conquiste o impossível Latumia. (W.J.F.)'
 ]
 
 # Gera um indíce do aleatório, retornando uma frase aleatória
 def MsgSorte():
-    x = random.randint(0,len(frases))
+    x = random.randint(0,(len(frases)-1))
     return frases[x]
 # def MsgSorte
