@@ -1,6 +1,8 @@
 import discord
 from discord.ext  import commands
 from MsgAleatoria import *
+from WeatherPy import *
+from WeatherPy.Temperatura import Temperatura
 
 # Criando o objeto
 bot = commands.Bot('=')
@@ -42,14 +44,35 @@ async def Ajuda(ctx):
 async def Comandos(ctx):
     embed_comandos = discord.Embed (
         title = ':four_leaf_clover: Comandos BiscoitoDaSorte',
-        description = '**=comandos**: Mostra uma lista de comandos que podem ser utilizados no BiscoitoDaSorte.\n**=sorte**: Imprime uma mensagem aleatória, pode trazer bons conselhos e avisos.\n',
+        description = ('**=comandos**: Mostra uma lista de comandos que podem ser utilizados no BiscoitoDaSorte.\n'
+                        +'**=sorte**: Mostra uma mensagem aleatória, pode trazer bons conselhos e avisos.\n'
+                        +'**=tempo**: Mostra informações do tempo e clima da região.'),
         color = 0x00B70F,
     )
     await ctx.message.add_reaction('\N{four leaf clover}')
     await ctx.send(embed=embed_comandos)
 # def Comandos
 
+@bot.command(name='tempo')
+async def Tempo(ctx, *, city):
+    temperatura, umidade, pressao, temp_min, temp_max, localidade,descricao = Temperatura(city)
+
+    embed_tempo = discord.Embed (
+        title = f'Previsão do tempo de {city}, {localidade}',
+        description = (descricao),
+        color = 0x00B70F
+    )
+    embed_tempo.add_field(name=':thermometer: Temperatura',
+        value=(f'**Atual: **{temperatura} °C\n**Máx: **{temp_max} °C \n **Mín:** {temp_min} °C')
+    )
+    embed_tempo.add_field(name=':droplet: Úmidade', value=('%.1f %%' % umidade))
+    embed_tempo.add_field(name=':mountain_snow: Pressão', value=(f'{pressao} kPa'))
+
+    await ctx.message.add_reaction('\N{four leaf clover}')
+    await ctx.send(content=ctx.author.mention, embed=embed_tempo)
+# def Tempo    
+
 # Executando o BOT, deixando-o online
 # Você deve passar o token obtido em:
 # https://discord.com/developers/applications
-bot.run('teste')
+bot.run('seu token')
